@@ -16,7 +16,7 @@ The program performs the following operations:
 
 ---
 
-##  Software Used
+## Software Used
 
 - Anaconda – Python 3.7  
 - Jupyter Notebook / VS Code  
@@ -26,7 +26,7 @@ The program performs the following operations:
 
 ---
 
-##  Algorithm
+## Algorithm
 
 ### Step 1:
 Import the required libraries: OpenCV, NumPy, and Matplotlib.
@@ -69,42 +69,153 @@ Read the input image in color mode.
 
 ---
 
-##  Program
+## Program
 
-### Developed By:
-**Name:** ____________________________  
+### Developed By: Vikamuhan Reddy
 
-### Register No:
-____________________________  
+### Register No: 212223240181
 
----
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Read the input image
+img = cv2.imread('parrot.jpg')
+
+if img is None:
+    print("Image not found!")
+else:
+    # Convert BGR to RGB for displaying
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    h, w = img.shape[:2]
+
+    # 1. Image Translation
+    M = np.float32([[1, 0, 50],
+                    [0, 1, 80]])
+
+    translated = cv2.warpAffine(img, M, (w, h))
+
+    # 2. Image Scaling
+    downscaled = cv2.resize(img, None, fx=0.5, fy=0.5)
+    upscaled = cv2.resize(img, None, fx=2, fy=2)
+
+    # 3. Image Shearing
+    horizontal_matrix = np.float32([
+        [1, 0.5, 0],
+        [0, 1, 0]
+    ])
+
+    vertical_matrix = np.float32([
+        [1, 0, 0],
+        [0.5, 1, 0]
+    ])
+
+    horizontal_shear = cv2.warpAffine(img, horizontal_matrix, (w, h))
+    vertical_shear = cv2.warpAffine(img, vertical_matrix, (w, h))
+
+    # 4. Image Reflection
+    horizontal_flip = cv2.flip(img, 1)
+    vertical_flip = cv2.flip(img, 0)
+    both_flip = cv2.flip(img, -1)
+
+    # 5. Image Rotation
+    center = (w // 2, h // 2)
+
+    M45 = cv2.getRotationMatrix2D(center, 45, 1)
+    rotated45 = cv2.warpAffine(img, M45, (w, h))
+
+    M90 = cv2.getRotationMatrix2D(center, 90, 1)
+    rotated90 = cv2.warpAffine(img, M90, (w, h))
+
+    # Function to display images
+    def show_image(title, image):
+        plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        plt.title(title)
+        plt.axis('off')
+
+    # Display Translation
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
+    show_image("Original Image", img)
+
+    plt.subplot(1, 2, 2)
+    show_image("Translated Image", translated)
+    plt.show()
+
+    # Display Scaling
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 3, 1)
+    show_image("Original Image", img)
+
+    plt.subplot(1, 3, 2)
+    show_image("Downscaled Image", downscaled)
+
+    plt.subplot(1, 3, 3)
+    show_image("Upscaled Image", upscaled)
+    plt.show()
+
+    # Display Shearing
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 3, 1)
+    show_image("Original Image", img)
+
+    plt.subplot(1, 3, 2)
+    show_image("Horizontal Shearing", horizontal_shear)
+
+    plt.subplot(1, 3, 3)
+    show_image("Vertical Shearing", vertical_shear)
+    plt.show()
+
+    # Display Reflection
+    plt.figure(figsize=(12, 5))
+    plt.subplot(2, 2, 1)
+    show_image("Original Image", img)
+
+    plt.subplot(2, 2, 2)
+    show_image("Horizontal Flip", horizontal_flip)
+
+    plt.subplot(2, 2, 3)
+    show_image("Vertical Flip", vertical_flip)
+
+    plt.subplot(2, 2, 4)
+    show_image("Both Axes Flip", both_flip)
+    plt.show()
+
+    # Display Rotation
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 3, 1)
+    show_image("Original Image", img)
+
+    plt.subplot(1, 3, 2)
+    show_image("45 Degree Rotation", rotated45)
+
+    plt.subplot(1, 3, 3)
+    show_image("90 Degree Rotation", rotated90)
+    plt.show()
+```
 
 ##  Output
 
 ### Image Translation
-- Original image is displayed  
-- Translated image (shifted right and down) is displayed  
+<img width="833" height="255" alt="image" src="https://github.com/user-attachments/assets/ddbd2992-74a1-4a5b-a241-776c01ca61ee" />
+
 
 ### Image Scaling
-- Original image is displayed  
-- Downscaled image (0.5×) is displayed  
-- Upscaled image (2×) is displayed  
+<img width="972" height="215" alt="image" src="https://github.com/user-attachments/assets/662c6121-d146-49ca-9458-e7866eafac93" />
+
 
 ### Image Shearing
-- Original image is displayed  
-- Horizontally sheared image is displayed  
-- Vertically sheared image is displayed  
+<img width="966" height="212" alt="image" src="https://github.com/user-attachments/assets/8c98b5e4-85ae-4582-b8b3-1ac551b7a74a" />
+
 
 ### Image Reflection
-- Original image is displayed  
-- Horizontally flipped image is displayed  
-- Vertically flipped image is displayed  
-- Both-axis flipped image is displayed  
+<img width="826" height="422" alt="image" src="https://github.com/user-attachments/assets/3594c977-d352-478f-9650-9c451b717862" />
+
 
 ### Image Rotation
-- Original image is displayed  
-- 45° rotated image is displayed  
-- 90° rotated image is displayed  
+<img width="802" height="171" alt="image" src="https://github.com/user-attachments/assets/b9c3fd30-1078-473f-b12e-02d451d0b4f2" />
 
 ---
 
